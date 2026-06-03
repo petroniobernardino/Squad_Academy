@@ -1,4 +1,4 @@
-name: Pipeline testes - The Test Tibe Porto
+name: Pipeline testes - Squad Academy
 
 on: 
   push:
@@ -16,7 +16,7 @@ jobs:
         - name: checkout
           uses: actions/checkout@v3
 
-          # O que executara
+          # O que executara e o caminho (linha 24)
         - name: Testes
           run: |
             docker run \
@@ -38,14 +38,14 @@ jobs:
         runs-on: ubuntu-latest
 
         # Indica a dependencia para correr o Job    
-        needs: Testes_API
+        #needs: Testes_API
 
         steps:
             # "Quem" ira clonar o repositorio para a execução
           - name: checkout
             uses: actions/checkout@v3
 
-            # O que executara
+            # O que executara e o caminho (linha 53)
           - name: Testes
             run: |
               docker run \
