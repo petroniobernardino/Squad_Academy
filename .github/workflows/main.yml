@@ -7,7 +7,7 @@ on:
     - cron: '0 10 * * 1'  
              
 jobs:
-  Testes_API_Squad:
+  Testes_API_01:
       # Maquina que irá ser executada o workflow
       runs-on: ubuntu-latest
 
@@ -32,13 +32,38 @@ jobs:
             name: reports
             path: ${{ github.workspace }}/reports      
 
+  Testes_API_02:
+      # Maquina que irá ser executada o workflow
+      runs-on: ubuntu-latest
+
+      steps:
+          # "Quem" ira clonar o repositorio para a execução
+        - name: checkout
+          uses: actions/checkout@v3
+
+          # O que executara e o caminho (linha 24)
+        - name: Testes
+          run: |
+            docker run \
+            -v ${PWD}/reports:/opt/robotframework/reports:Z \
+            -v ${PWD}/tests_api2:/opt/robotframework/tests:Z \
+            --user $(id -u):$(id -g) \
+            ppodgorsek/robot-framework:latest
+
+        - name: Upload reports
+          uses: actions/upload-artifact@v4
+          if: always()
+          with:
+            name: reports
+            path: ${{ github.workspace }}/reports      
+
       
   Testes_Web_Squad:
         # Maquina que irá ser executada o workflow
         runs-on: ubuntu-latest
 
         # Indica a dependencia para correr o Job    
-        needs: Testes_API_Squad
+        needs: Testes_API_01
 
         steps:
             # "Quem" ira clonar o repositorio para a execução
